@@ -34,29 +34,26 @@ def get_cars_data():
 
     return cars_list
 
-# Define a route to return JSON data for all cars
+
 @app.route('/api/data/all', methods=['GET'])
 def get_all_cars():
     cars_data = get_cars_data()
     return jsonify(cars_data)
 
-# Define a route to return cropped car image and license plate image for a specific car ID
 @app.route('/api/data/<int:id>', methods=['GET'])
 def get_car_details(id):
-    # Connect to the SQLite database
+
     conn = sqlite3.connect('./../db/data.sqlite')
     cursor = conn.cursor()
 
-    # Execute a query to fetch data for the specified car ID
+
     cursor.execute("SELECT car_cropped_image, licence_plate_cropped_image FROM cars WHERE id = ?", (id,))
     data = cursor.fetchone()
 
-    # Close the database connection
     conn.close()
 
     if data:
         car_image_path, plate_image_path = data
-        # Return the images as files
         return send_file(car_image_path), send_file(plate_image_path)
     else:
         return jsonify({"error": "Car not found"}), 404

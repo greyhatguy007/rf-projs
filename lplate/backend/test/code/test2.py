@@ -6,13 +6,14 @@ import numpy as np
 import base64
 
 # Initialize YOLO model
-model = YOLO("yolov8n.pt")
+model = YOLO("./../../models/yolov8n.pt")
 
 # Initialize EasyOCR
 # You can specify the languages you want to support
 reader = easyocr.Reader(['en'])
 
-image_path = input('Enter Path: ')
+# image_path = input('Enter Path: ')
+image_path = "./../images/image.png"
 
 while True:
     # Load the image
@@ -41,7 +42,6 @@ while True:
                 try:
                     car_region = image[y_min:y_max, x_min:x_max]
                     # Convert the car region to JPEG format (you can use other formats like PNG as well)
-                    
 
                     # Apply blackhat filtering to enhance contrast
                     kernel = np.ones((5, 5), np.uint8)
